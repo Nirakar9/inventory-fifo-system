@@ -7,7 +7,7 @@ async function initDB() {
     console.log('Connecting to database...');
     await db.query('SELECT 1');
     console.log('Connected. Running init.sql...');
-    const sql = fs.readFileSync('./init.sql', 'utf8');
+    const sql = fs.readFileSync('./backend/init.sql', 'utf8');
     console.log('SQL content length:', sql.length);
     await db.query(sql);
     console.log('Database initialized successfully');
