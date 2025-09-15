@@ -93,8 +93,8 @@ router.delete('/api/products/:product_id', requireAuth, async (req, res) => {
     res.json({ message: 'Product deleted successfully' });
   } catch (err) {
     console.error('Error deleting product:', err);
-    res.status(500).json({ error: 'Failed to delete product' });
-  }
-});
-
-module.exports = router;
+    // Add detailed error logging
+    if (err.code) {
+      console.error(`Postgres error code: ${err.code}`);
+    }
+    if (err.detail) {
