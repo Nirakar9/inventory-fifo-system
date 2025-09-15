@@ -28,6 +28,7 @@ export default function ProductList() {
       });
       if (!response.ok) throw new Error('Failed to fetch products');
       const data = await response.json();
+      console.log('Fetched products:', data);
       setProducts(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -81,7 +82,7 @@ export default function ProductList() {
               <div className="ml-4">
                 <div className="text-sm font-medium text-gray-900">{product.name}</div>
                 <div className="text-sm text-gray-500">ID: {product.product_id}</div>
-                <div className="text-sm text-gray-500">Quantity: {product.total_quantity}</div>
+                <div className="text-sm text-gray-500">Quantity: {Number(product.total_quantity) || 0}</div>
               </div>
               </div>
               <button
