@@ -20,8 +20,10 @@ function requireAuth(req, res, next) {
 
 router.get('/api/products', requireAuth, async (req, res) => {
   const result = await db.query(`
-    SELECT p.product_id, p.name
+    SELECT p.product_id, p.name, COALESCE(SUM(ib.quantity), 0) as total_quantity
     FROM products p
+    LEFT JOIN inventory_batches ib ON p.product_id = ib.product_id
+    GROUP BY p.product_id, p.name
   `);
   res.json(result.rows);
 });
