@@ -20,18 +20,23 @@ export default function ProductList() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/products', {
+      const response = await fetch('http://localhost:4000/api/products', {
         credentials: 'include',
         headers: {
           'Authorization': 'Basic ' + btoa('admin:password123') // Assuming default auth
         }
       });
-      if (!response.ok) throw new Error('Failed to fetch products');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch products: ${response.status} ${response.statusText} - ${errorText}`);
+      }
       const data = await response.json();
       console.log('Fetched products:', data);
       setProducts(data);
+      setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Fetch products error:', err);
     } finally {
       setLoading(false);
     }
@@ -43,16 +48,22 @@ export default function ProductList() {
     }
     setDeleting(productId);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${productId}`, {
+      const response = await fetch(`http://localhost:4000/api/products/${productId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': 'Basic ' + btoa('admin:password123')
         }
       });
-      if (!response.ok) throw new Error('Failed to delete product');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to delete product: ${response.status} ${response.statusText} - ${errorText}`);
+      }
       setProducts(products.filter(p => p.product_id !== productId));
+      setError(null);
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'An error occurred');
+      // No alert as per user request
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Delete product error:', err);
     } finally {
       setDeleting(null);
     }
@@ -83,7 +94,7 @@ export default function ProductList() {
                 <div className="text-sm font-medium text-gray-900">{product.name}</div>
                 <div className="text-sm text-gray-500">ID: {product.product_id}</div>
                 <div className="text-sm text-gray-500">
-                  Quantity: {product.total_quantity === 0 ? '0 (No stock)' : Number(product.total_quantity)}
+                  Quantity: {product.total_quantity === 0 ? '0 (No stock)' : product.total_quantity}
                 </div>
               </div>
               </div>
