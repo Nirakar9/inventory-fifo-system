@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 interface Product {
   product_id: string;
   name: string;
-  total_quantity: number;
 }
 
 export default function ProductList() {
@@ -93,9 +92,6 @@ export default function ProductList() {
               <div className="ml-4">
                 <div className="text-sm font-medium text-gray-900">{product.name}</div>
                 <div className="text-sm text-gray-500">ID: {product.product_id}</div>
-                <div className="text-sm text-gray-500">
-                  Quantity: {product.total_quantity === 0 ? '0 (No stock)' : product.total_quantity}
-                </div>
               </div>
               </div>
               <button
