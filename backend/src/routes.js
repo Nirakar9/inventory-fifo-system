@@ -78,11 +78,12 @@ router.delete('/api/products/:product_id', requireAuth, async (req, res) => {
     return res.status(400).json({ error: 'Product ID is required' });
   }
   try {
-    // Delete inventory batches first due to foreign key constraint
-    await db.query('DELETE FROM inventory_batches WHERE product_id = $1', [product_id]);
-    // Also delete sales and sale_allocations related to this product to avoid FK constraint issues
+    // Delete sale_allocations first due to foreign key constraint on inventory_batches
     await db.query('DELETE FROM sale_allocations WHERE sale_id IN (SELECT id FROM sales WHERE product_id = $1)', [product_id]);
+    // Delete sales related to this product
     await db.query('DELETE FROM sales WHERE product_id = $1', [product_id]);
+    // Delete inventory batches
+    await db.query('DELETE FROM inventory_batches WHERE product_id = $1', [product_id]);
     // Then delete the product
     const result = await db.query('DELETE FROM products WHERE product_id = $1', [product_id]);
     if (result.rowCount === 0) {
