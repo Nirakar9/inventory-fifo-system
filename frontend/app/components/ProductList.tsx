@@ -59,8 +59,8 @@ export default function ProductList() {
       }
       setProducts(products.filter(p => p.product_id !== productId));
       setError(null);
+      // alert('Product deleted successfully.');
     } catch (err) {
-      // No alert as per user request
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Delete product error:', err);
     } finally {
@@ -108,3 +108,4 @@ export default function ProductList() {
     </div>
   );
 }
+
