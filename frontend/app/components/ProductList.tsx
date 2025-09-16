@@ -20,7 +20,7 @@ export default function ProductList() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/products', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`, {
         credentials: 'include',
         headers: {
           'Authorization': 'Basic ' + btoa('admin:password123') // Assuming default auth
@@ -48,7 +48,7 @@ export default function ProductList() {
     }
     setDeleting(productId);
     try {
-      const response = await fetch(`http://localhost:4000/api/products/${productId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${productId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': 'Basic ' + btoa('admin:password123')
