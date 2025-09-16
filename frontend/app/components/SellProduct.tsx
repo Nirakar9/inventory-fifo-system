@@ -13,7 +13,7 @@ export default function SellProduct() {
     setLoading(true);
     setMessage(null);
     try {
-      const response = await fetch('http://localhost:4000/api/sell', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sell`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
