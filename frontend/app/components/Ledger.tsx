@@ -29,7 +29,7 @@ export default function Ledger({ refreshTrigger }: LedgerProps) {
 
   const fetchLedger = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/ledger', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/ledger`, {
         credentials: 'include',
         headers: {
           'Authorization': 'Basic ' + btoa('admin:password123') // Assuming default auth
